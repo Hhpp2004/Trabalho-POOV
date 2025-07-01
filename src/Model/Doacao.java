@@ -81,11 +81,9 @@ public class Doacao {
         builder.append(", hora = ");
         builder.append(hora);
         builder.append(", volume = ");
-        builder.append(volume+" ml");
+        builder.append(volume+" ml]");
         builder.append("\n");
-        builder.append("Doador: = ");
         builder.append(doador);
-        builder.append("]");
         return builder.toString();
     }
 

@@ -13,9 +13,20 @@ import Model.DAO.DoacaoDao;
 import Model.DAO.DoadorDAO;
 
 public class MenuDoacao {
+
+    private static LocalDate formatacao(String data) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(data, format);        
+    }
+
+    private static LocalTime formatacaoTime(String hora) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return LocalTime.parse(hora,format);
+    }
+
     public static Doacao cadastro(Scanner entrada) {
         long codigo;
-        double volume;
+        double volume = 0;
         DoadorDAO doadorDAO = new DoadorDAO();
         DoadorDAO dao = new DoadorDAO();
         List<Doador> lista = dao.findAll();
@@ -26,8 +37,24 @@ public class MenuDoacao {
         if (doador != null) {
             if (doador.getSituacao() == Situacao.ATIVO) {
                 System.out.print("Digite o volume para doação: ");
-                volume = Double.parseDouble(entrada.nextLine());
-                return new Doacao(LocalDate.now(), LocalTime.now(), volume, doador);
+                do {
+                    try {
+                        volume = Double.parseDouble(entrada.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.err.println((volume < -1) ? "Volume negativo"
+                                : ((volume == -1) ? "Somente número" : "Valor inválido"));
+                        volume = -1;
+                    }
+                } while (volume < 0);
+                System.out.print("Digite a data da doação: ");
+                String data;
+
+                data = entrada.nextLine();
+
+                System.out.print("Digite o horario da doação: ");
+                String hora = entrada.nextLine();
+
+                return new Doacao(formatacao(data), formatacaoTime(hora), volume, doador);
             } else {
                 System.err.println("É necessario atualizar a situação do doador para 'ATIVO'");
                 return null;
@@ -36,11 +63,6 @@ public class MenuDoacao {
             System.err.println("Doador não encontrado\n");
             return null;
         }
-    }
-
-    private static LocalDate formatacao(String data) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(data, format);
     }
 
     public static void pesquisa(Scanner entrada, DoacaoDao dao) {
@@ -53,7 +75,7 @@ public class MenuDoacao {
             do {
                 try {
                     menu = Integer.parseInt(entrada.nextLine());
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     System.err.println("Somente número para efetuar a operação\n");
                     menu = -1;
                 }
@@ -151,15 +173,8 @@ public class MenuDoacao {
         System.out.println("Atualização");
         dao.findAll().forEach(e -> System.out.println(e.toString()));
         System.out.print("Digite o codigo do dado para atualização: ");
-        Long codigo;
-        do {
-            try {
-                codigo = Long.parseLong(entrada.nextLine());
-            } catch (NumberFormatException e) {
-                System.err.println("Somente número");
-                codigo = -1l;
-            }
-        } while (codigo == -1l);
+        Long codigo = Long.parseLong(entrada.nextLine());
+
         int menu, opc;
         Doacao doacao = dao.find_code(codigo);
         System.out.println(doacao);
@@ -187,8 +202,22 @@ public class MenuDoacao {
                         doacao.setHora(LocalTime.parse(entrada.nextLine()));
                         break;
                     case 3:
+                        double volume = 0l;
                         System.out.print("Digite o novo volume: ");
-                        doacao.setVolume(Double.parseDouble(entrada.nextLine()));
+                        do {
+                            volume = Double.parseDouble(entrada.nextLine());
+                            if(volume < 0)
+                            {
+                                System.err.println("Volume negativo");
+                                volume = -1;
+                            }
+                            try {
+                            } catch (NumberFormatException e) {
+                                System.err.println("Somente número");
+                                volume = -1;
+                            }
+                        } while (volume < 0);
+                        doacao.setVolume(volume);
                         break;
                     case 4:
                         DoadorDAO dao_aux = new DoadorDAO();
@@ -203,7 +232,7 @@ public class MenuDoacao {
                 do {
                     try {
                         opc_aux = Integer.parseInt(entrada.nextLine());
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         System.err.println("Somente numero para opcão\n");
                         opc_aux = -1;
                     }

@@ -127,7 +127,7 @@ public class DoacaoDao {
                     System.err.println("Doador não encontrado\n");
                 } else {
                     if (lista.size() == 1) {
-                        preparedStatement.setLong(1, lista.getFirst().getCodigo());
+                        preparedStatement.setLong(1, lista.get(0).getCodigo());
                     } else {
                         System.out.println("Existe outros doadores");
                         lista.forEach(e -> System.out.println(e.toString()));
@@ -227,7 +227,7 @@ public class DoacaoDao {
                 } else {
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
                     if (doadors.size() == 1) {
-                        preparedStatement.setLong(1, doadors.getFirst().getCodigo());
+                        preparedStatement.setLong(1, doadors.get(0).getCodigo());
                     } else {
                         System.out.println("Mais de um doador encontrado");
                         System.out.println("Escolha um doador:");
