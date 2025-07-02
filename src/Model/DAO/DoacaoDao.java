@@ -14,6 +14,8 @@ import Model.Doacao;
 import Model.Doador;
 import Model.DAO.Core.ConnectFactory;
 
+
+
 public class DoacaoDao {
     public List<Doacao> findAll() {
         Connection connection = ConnectFactory.getConnect();
@@ -132,8 +134,7 @@ public class DoacaoDao {
                         System.out.println("Existe outros doadores");
                         lista.forEach(e -> System.out.println(e.toString()));
                         System.out.println("Digite o codigo do Doador desejado: ");
-                        Long codigo = Long.parseLong(entrada.nextLine());
-                        preparedStatement.setLong(1, codigo);
+                        preparedStatement.setLong(1, Long.parseLong(entrada.nextLine()));
                     }
                     ResultSet rs = preparedStatement.executeQuery();
                     while (rs.next()) {
@@ -233,8 +234,7 @@ public class DoacaoDao {
                         System.out.println("Escolha um doador:");
                         doadors.forEach(e -> System.out.println(e.toString()));
                         System.out.println("Digite o código do doador:");
-                        long codigo = Long.parseLong(entrada.nextLine());
-                        preparedStatement.setLong(1, codigo);
+                        preparedStatement.setLong(1, Long.parseLong(entrada.nextLine()));
                     }
                     ResultSet rs = preparedStatement.executeQuery();
                     while (rs.next()) {

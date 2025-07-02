@@ -1,16 +1,15 @@
 package Menu;
 
+import Model.DAO.DoacaoDao;
+import Model.DAO.DoadorDAO;
+import Model.Doacao;
+import Model.Doador;
+import Model.Situacao;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
-
-import Model.Doacao;
-import Model.Doador;
-import Model.Situacao;
-import Model.DAO.DoacaoDao;
-import Model.DAO.DoadorDAO;
 
 public class MenuDoacao {
 
@@ -38,12 +37,10 @@ public class MenuDoacao {
             if (doador.getSituacao() == Situacao.ATIVO) {
                 System.out.print("Digite o volume para doação: ");
                 do {
-                    try {
-                        volume = Double.parseDouble(entrada.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.err.println((volume < -1) ? "Volume negativo"
-                                : ((volume == -1) ? "Somente número" : "Valor inválido"));
-                        volume = -1;
+                    volume = Double.parseDouble(entrada.nextLine());
+                    if(volume < 0)
+                    {
+                        System.err.println("Volume negativo ...\nTente Novamente ...");
                     }
                 } while (volume < 0);
                 System.out.print("Digite a data da doação: ");
@@ -72,14 +69,7 @@ public class MenuDoacao {
             System.out.println(
                     "1 - Pelo Código do Doador\n2 - Pelo Nome do Doardor\n3 - Pelo CPF do Doador\n4 - Pelo codigo da Doação\n5 - Pela Data da Doação\n6 - Voltar");
             System.out.print("Opção: ");
-            do {
-                try {
-                    menu = Integer.parseInt(entrada.nextLine());
-                } catch (NumberFormatException e) {
-                    System.err.println("Somente número para efetuar a operação\n");
-                    menu = -1;
-                }
-            } while (menu == -1);
+            menu = Integer.parseInt(entrada.nextLine());
             if (menu == 1) {
                 System.out.print("Digite o codigo do Doador: ");
                 Long codigo = Long.parseLong(entrada.nextLine());
@@ -124,14 +114,7 @@ public class MenuDoacao {
                     System.out.println(
                             "Deseja pesquisa com:\n1 - Antes da data desejada\n2 - Com intervalo de data\n3 - Depois da data desejada\n4 - Voltar");
                     System.out.print("Opção: ");
-                    do {
-                        try {
-                            pes_data = Integer.parseInt(entrada.nextLine());
-                        } catch (NumberFormatException e) {
-                            System.err.println("Somente entrada com número\n");
-                            pes_data = -1;
-                        }
-                    } while (pes_data == -1);
+                    pes_data = Integer.parseInt(entrada.nextLine());
                     if (pes_data == 1) {
                         System.out.print("Digite a data desejada: ");
                         List<Doacao> lista = dao.find_before(formatacao(entrada.nextLine()));
@@ -172,26 +155,19 @@ public class MenuDoacao {
     public static void atualizacao(Scanner entrada, DoacaoDao dao) {
         System.out.println("Atualização");
         dao.findAll().forEach(e -> System.out.println(e.toString()));
-        System.out.print("Digite o codigo do dado para atualização: ");
+        System.out.print("Digite o codigo da doação para atualização: ");
         Long codigo = Long.parseLong(entrada.nextLine());
-
+        int opc_aux;
         int menu, opc;
         Doacao doacao = dao.find_code(codigo);
-        System.out.println(doacao);
+        System.out.println(doacao.toString());
         System.out.println("Deseja Atualizar [1 - Sim ou 2 - Não] ?");
         menu = Integer.parseInt(entrada.nextLine());
         if (menu == 1) {
             do {
                 System.out.println("1 - Data\n2 - hora\n3 - volume\n4 - Doador\n");
                 System.out.print("Opção: ");
-                do {
-                    try {
-                        opc = Integer.parseInt(entrada.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.err.println("Somente número");
-                        opc = -1;
-                    }
-                } while (opc == -1);
+                opc = Integer.parseInt(entrada.nextLine());
                 switch (opc) {
                     case 1:
                         System.out.print("Digite a nova data: ");
@@ -211,11 +187,6 @@ public class MenuDoacao {
                                 System.err.println("Volume negativo");
                                 volume = -1;
                             }
-                            try {
-                            } catch (NumberFormatException e) {
-                                System.err.println("Somente número");
-                                volume = -1;
-                            }
                         } while (volume < 0);
                         doacao.setVolume(volume);
                         break;
@@ -227,19 +198,12 @@ public class MenuDoacao {
                         System.err.println("Opção não disponivel\n");
                         break;
                 }
-                System.out.println("Deseja continuar [1 - Sim ou 2 - Não] ?");
-                int opc_aux;
-                do {
-                    try {
-                        opc_aux = Integer.parseInt(entrada.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.err.println("Somente numero para opcão\n");
-                        opc_aux = -1;
-                    }
-                } while (opc_aux == -1);
-            } while (opc == 5);
+                System.out.println("Deseja atualizar algum dado [1 - Sim ou 2 - Não] ?");
+                opc_aux = Integer.parseInt(entrada.nextLine());
+            } while (opc != 5 && opc_aux == 1);
             if (dao.update(doacao)) {
                 System.out.println("Atualizado com sucesso\n");
+                System.out.println(doacao.toString());
             } else {
                 System.err.println("Erro para realizar a atualização\n");
             }
@@ -262,14 +226,7 @@ public class MenuDoacao {
             System.out.println("Doação");
             System.out.println("1 - Cadastrar\n2 - Pesquisar\n3 - Alterar\n4 - Remover\n5 - Voltar");
             System.out.print("Opção: ");
-            do {
-                try {
-                    menu = Integer.parseInt(entrada.nextLine());
-                } catch (NumberFormatException e) {
-                    System.err.println("Somente Número para entrada");
-                    menu = -1;
-                }
-            } while (menu == -1);
+            menu = Integer.parseInt(entrada.nextLine());
             if (menu == 1) {
                 Doacao doacao = cadastro(entrada);
                 if (doacao != null) {

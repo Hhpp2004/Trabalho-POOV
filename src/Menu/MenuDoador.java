@@ -33,44 +33,29 @@ public class MenuDoador {
 
         do {
             System.out.println("Digite o seu RH:\n1 - Positivo\n2 - Negativo\n3 - Desconhecido");
-            try {
-                indice1 = Integer.parseInt(entrada.nextLine());
-                if (indice1 - 1 >= RH.values().length || indice1 < 1) {
-                    System.err.println("Indice não encontrado");
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor, digite apenas números!");
-                indice1 = -1;
+            indice1 = Integer.parseInt(entrada.nextLine());
+            if (indice1 - 1 >= RH.values().length || indice1 < 1) {
+                System.err.println("Indice não encontrado");
             }
-        } while (indice1 - 1 >= RH.values().length || indice1 < 1);
+        } while (indice1 - 1 >= RH.values().length);
         rh = RH.values()[indice1 - 1];
 
         do {
             System.out.println("Digite o seu tipoSanguineo:\n1 - A\n2 - B\n3 - AB\n4 - O\n5 - Desconhecido");
-            try {
-                indice2 = Integer.parseInt(entrada.nextLine());
-                if (indice2 - 1 >= TipoSanguineo.values().length || indice2 < 1) {
-                    System.err.println("Indice não encontrado");
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor, digite apenas números!");
-                indice2 = -1;
+            indice2 = Integer.parseInt(entrada.nextLine());
+            if (indice2 - 1 >= TipoSanguineo.values().length || indice2 < 1) {
+                System.err.println("Indice não encontrado");
             }
-        } while (indice2 - 1 >= TipoSanguineo.values().length || indice2 < 1);
+        } while (indice2 - 1 >= TipoSanguineo.values().length);
         ts = TipoSanguineo.values()[indice2 - 1];
 
         do {
             System.out.println("Digite a sua situação:\n1 - Ativa\n2 - Inativa");
-            try {
-                indice3 = Integer.parseInt(entrada.nextLine());
-                if (indice3 - 1 >= Situacao.values().length || indice3 < 1) {
-                    System.err.println("Indice não encontrado");
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor, digite apenas números!");
-                indice3 = -1;
-            }
-        } while (indice3 - 1 >= Situacao.values().length || indice3 < 1);
+            indice3 = Integer.parseInt(entrada.nextLine());
+            if (indice3 - 1 >= Situacao.values().length || indice3 < 1) {
+                System.err.println("Indice não encontrado");
+            }            
+        } while (indice3 - 1 >= Situacao.values().length);
         situacao = Situacao.values()[indice3 - 1];
 
         return new Doador(nome, cpf, contato, rh, ts, situacao);
@@ -82,14 +67,8 @@ public class MenuDoador {
             System.out.println("Pesquisa");
             System.out.println("1 - Pelo código\n2 - Pelo nome\n3 - Pelo CPF\n4 - Voltar");
             System.out.printf("Opção: ");
-            do {
-                try {
-                    menu = Integer.parseInt(entrada.nextLine());
-                } catch (NumberFormatException e) {
-                    System.err.println("Por favor, digite apenas números!");
-                    menu = -1;
-                }
-            } while (menu == -1);
+            menu = Integer.parseInt(entrada.nextLine());
+
             if (menu == 1) {
                 System.out.println("Pesquisa pelo o codigo");
                 System.out.println("Digite o codigo: ");
@@ -185,7 +164,7 @@ public class MenuDoador {
                             System.err.println("Opção não disponivel");
                             break;
                     }
-                    System.out.println("Deseja Continuar ?\n0 - Não\n1 - Sim");
+                    System.out.println("Deseja atualizar algum dado ?\n0 - Não\n1 - Sim");
                     menu = Integer.parseInt(entrada.nextLine());
                 } while (menu != 0);
                 dao.update(doador);

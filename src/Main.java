@@ -10,17 +10,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
         int menu = 0;
-        do {
-            do {
+        do {           
                 System.out.println("1 - Doador\n2 - Doação\n3 - Sair");
                 System.out.printf("Opção: ");
-                try {
-                    menu = Integer.parseInt(entrada.nextLine());
-                } catch (NumberFormatException e) {
-                    System.err.println("\nDigite somente número");
-                    menu = -1;
-                }
-            } while (menu == -1);
+                menu = Integer.parseInt(entrada.nextLine());  
             if (menu == 1) {
                 MenuDoador.doador(entrada);
             } else if (menu == 2) {
