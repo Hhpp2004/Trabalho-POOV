@@ -106,17 +106,12 @@ public class MenuDoador {
         } while (menu != 4);
     }
 
-    public static void atualizacao(Scanner entrada, DoadorDAO dao, long codigo) {
+    public static void atualizacao(Scanner entrada, DoadorDAO dao) {
         List<Doador> lista = dao.findAll();
         Doador doador;
-        if (codigo == 0l) {
-            lista.forEach(e -> System.out.println(e.toString()));
-            System.out.println("Digite o codigo do doador para atualização: ");
-            codigo = Long.parseLong(entrada.nextLine());
-            doador = dao.find_code(codigo);
-        } else {
-            doador = dao.find_code(codigo);
-        }
+        lista.forEach(e -> System.out.println(e.toString()));
+        System.out.print("Digite o codigo: ");
+        doador = dao.find_code(Long.parseLong(entrada.nextLine()));
         if (doador != null) {
             System.out.println(doador.toString());
             System.out.println("Deseja atualizar os dados ?\n1 - Sim\n2 - Não");
@@ -213,7 +208,7 @@ public class MenuDoador {
             } else if (menu == 2) {
                 pesquisa(entrada, dao);
             } else if (menu == 3) {
-                atualizacao(entrada, dao, 0l);
+                atualizacao(entrada, dao);
             } else if (menu == 4) {
                 deletar(entrada, dao);
             } else if (menu > 5) {

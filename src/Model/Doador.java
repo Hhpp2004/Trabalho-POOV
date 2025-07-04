@@ -14,7 +14,7 @@ public class Doador {
             TipoSanguineo tipoSanguineo, Situacao situacao) {
         this.codigo = codigo;
         this.nome = nome;
-        this.cpf = cpf;
+        this.cpf = cpf; 
         this.contato = contato;
         this.tipoERhCorretos = tipoERhCorretos;
         this.rh = rh;

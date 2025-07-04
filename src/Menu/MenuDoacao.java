@@ -191,8 +191,11 @@ public class MenuDoacao {
                         doacao.setVolume(volume);
                         break;
                     case 4:
-                        DoadorDAO dao_aux = new DoadorDAO();
-                        MenuDoador.atualizacao(entrada, dao_aux, doacao.getDoador().getCodigo());
+                        DoadorDAO doadorDAO = new DoadorDAO();
+                        List<Doador> dao_aux = doadorDAO.findAll();
+                        dao_aux.forEach(e -> System.out.println(e.toString()));
+                        System.out.print("Digite o codigo do novo doador dessa Doação: ");
+                        doacao.setDoador(doadorDAO.find_code(Long.parseLong(entrada.nextLine()))); 
                         break;
                     default:
                         System.err.println("Opção não disponivel\n");

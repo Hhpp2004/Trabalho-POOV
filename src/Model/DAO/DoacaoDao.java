@@ -457,12 +457,13 @@ public class DoacaoDao {
         Connection connection = ConnectFactory.getConnect();
         if (connection != null) {
             try {
-                String sql = "update doacao set data = ?, hora = ?, volume = ? where codigo = ?";
+                String sql = "update doacao set data = ?, hora = ?, volume = ?,codigo_doador = ? where codigo = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setDate(1, java.sql.Date.valueOf(doacao.getData()));
                 preparedStatement.setTime(2, java.sql.Time.valueOf(doacao.getHora()));
                 preparedStatement.setDouble(3, doacao.getVolume());
-                preparedStatement.setLong(4, doacao.getCodigo());
+                preparedStatement.setLong(4, doacao.getDoador().getCodigo());
+                preparedStatement.setLong(5, doacao.getCodigo());
                 int alterado = preparedStatement.executeUpdate();
                 preparedStatement.close();
                 if (alterado == 1) {
